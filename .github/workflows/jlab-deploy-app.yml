@@ -1,0 +1,33 @@
+name: JLab Deploy App
+
+on:
+  workflow_call:
+    secrets:
+      DEPLOYER_USERNAME:
+        required: true
+      DEPLOYER_PASSWORD:
+        required: true
+    inputs:
+      env:
+        required: true
+        type: string
+      app:
+        required: true
+        type: string
+      ver:
+        required: true
+        type: string
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      -
+        run: |
+          TOKEN_URL="https://ace.jlab.org/auth/realms/ace/protocol/openid-connect/token"
+          DEPLOY_URL="https://ace.jlab.org/adm/deploy"
+          CLIENT_ID="${{ secrets.DEPLOYER_USERNAME }}"
+          SECRET="${{ secrets.DEPLOYER_PASSWORD }}"
+          JSON_RESPONSE=$(curl -s -u $CLIENT_ID:$SECRET -d "grant_type=client_credentials" "$TOKEN_URL")
+          ACCESS_TOKEN=$(echo $JSON_RESPONSE | jq -j '.access_token')
+          curl -X POST -H "Authorization: Bearer ${ACCESS_TOKEN}" -H "Content-Type: application/x-www-form-urlencoded" -d "env=${{ inputs.env }}&app=${{ inputs.app }}&ver=${{ inputs.ver }}" ${DEPLOY_URL}
