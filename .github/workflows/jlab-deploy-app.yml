@@ -49,5 +49,8 @@ jobs:
           CLIENT_ID="${{ secrets.DEPLOYER_USERNAME }}"
           SECRET="${{ secrets.DEPLOYER_PASSWORD }}"
           JSON_RESPONSE=$(curl -s -u $CLIENT_ID:$SECRET -d "grant_type=client_credentials" "$TOKEN_URL")
+          TOKEN_ERROR=$(echo $JSON_RESPONSE | jq -j '.error')
+          if [ "${TOKEN_ERROR}" = "null" ]; then echo "no token error"; else echo "token error: ${TOKEN_ERROR}"; fi
           ACCESS_TOKEN=$(echo $JSON_RESPONSE | jq -j '.access_token')
+          if [ "${ACCESS_TOKEN}" = "null" ]; then echo "token is null"; else echo "token is not null"; fi
           curl -X POST -H "Authorization: Bearer ${ACCESS_TOKEN}" -H "Content-Type: application/x-www-form-urlencoded" -d "env=${{ inputs.env }}&app=${{ inputs.app }}&ver=${{ inputs.ver }}" ${DEPLOY_URL}
