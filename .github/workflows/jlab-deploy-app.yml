@@ -17,6 +17,26 @@ on:
       ver:
         required: true
         type: string
+  workflow_dispatch:
+    secrets:
+      DEPLOYER_USERNAME:
+        required: true
+      DEPLOYER_PASSWORD:
+        required: true
+    inputs:
+      env:
+        required: true
+        description: "env name"
+        type: string
+      app:
+        required: true
+        description: "app name"
+        type: string
+      ver:
+        required: true
+        description: "semantic version"
+        type: string
+
 
 jobs:
   deploy:
