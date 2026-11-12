@@ -1,0 +1,11 @@
+# The tools that build this repository's own guide (zensical.toml), which CI builds with
+# user-guide-build.yaml to try that workflow.
+[project]
+name = "general-workflows-user-guide"
+# Required by uv, and unused: the workflows' versions are the repository's tags
+version = "0.0.0"
+requires-python = ">=3.11"
+dependencies = ["zensical==0.0.69"]
+
+[tool.uv]
+package = false

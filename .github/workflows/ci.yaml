@@ -1,0 +1,29 @@
+name: CI
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  # Builds this repository's own guide (zensical.toml) with this commit's user-guide-build.yaml,
+  # so a pull request that changes the workflow tries it
+  user-guide:
+    uses: ./.github/workflows/user-guide-build.yaml
+
+  # Runs user-guide-publish.yaml's front page step against a made-up gh-pages branch (tests/),
+  # without publishing
+  user-guide-publish-tests:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+      - name: Setup uv
+        uses: astral-sh/setup-uv@v10.3.3
+      - name: Test the front page step
+        run: uv run --locked --with-requirements tests/requirements.txt python -m unittest discover -s tests -v
