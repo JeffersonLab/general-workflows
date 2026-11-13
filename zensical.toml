@@ -1,0 +1,23 @@
+# This repository's own guide: how to publish a user guide website with the user-guide
+# workflows. CI builds it with user-guide-build.yaml, so a pull request tries its own version of
+# that workflow; nothing publishes it. `uv run --locked zensical build --strict` builds it into
+# site/, and `uv run --locked zensical serve` previews it.
+[project]
+site_name = "General Workflows User Guide"
+site_description = "How to publish a user guide website with JeffersonLab/general-workflows"
+repo_url = "https://github.com/JeffersonLab/general-workflows"
+repo_name = "JeffersonLab/general-workflows"
+edit_uri = "edit/main/docs/user-guide/"
+docs_dir = "docs/user-guide"
+site_dir = "site"
+# No site_url: a release is published in a folder of its own (v1.2.3/), so the pages link to
+# each other relatively.
+nav = [
+  { "Home" = "README.md" },
+]
+
+[project.markdown_extensions]
+admonition = {}
+attr_list = {}
+tables = {}
+toc.permalink = true

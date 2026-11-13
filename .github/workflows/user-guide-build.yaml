@@ -1,0 +1,22 @@
+name: User Guide Build
+
+# Builds the caller's user guide website with Zensical (https://zensical.org), for CI. --strict
+# fails on a warning, such as a link to a page or heading that doesn't exist. The caller keeps
+# zensical.toml, pyproject.toml and uv.lock at its root: they pin the tools per repository.
+# user-guide-publish.yaml publishes the website for a release.
+on:
+  workflow_call:
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+      - name: Setup uv
+        uses: astral-sh/setup-uv@v10.3.3
+      - name: Build the user guide
+        run: uv run --locked zensical build --strict

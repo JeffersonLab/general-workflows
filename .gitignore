@@ -1,1 +1,7 @@
 /.idea/
+# The guide website (zensical.toml) and its tools' caches
+/site/
+/pages/
+/.venv/
+/.cache/
+__pycache__/
